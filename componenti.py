@@ -54,7 +54,7 @@ def crea_sidebar():  # menu laterale
                     st.rerun()
 
             with col2:
-                if st.button("Svuota Chat"):
+                if st.button("Elimina chat"):
                     st.session_state.chat = []
                     st.session_state.titolo_chat = ""
                     # st.experimental_rerun()
