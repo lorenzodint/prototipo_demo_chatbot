@@ -12,41 +12,44 @@ crea_teabella_chat()
 # inizializzazione stato della sessione per la pagina
 # sessionState.session()
 
-if 'page' not in st.session_state:
+if 'page' not in st.session_state: # pagina di navigazione
     st.session_state.page = 'home'
 
-if 'loggato' not in st.session_state:
+if 'loggato' not in st.session_state: # utente loggato
     st.session_state.loggato = False
 
-if 'chi_loggato' not in st.session_state:
+if 'chi_loggato' not in st.session_state: # chi è loggato
     st.session_state.chi_loggato = 0
 
-if 'email_gia_registrata' not in st.session_state:
+if 'email_gia_registrata' not in st.session_state: # email già registrata (fase di registrazione)
     st.session_state.email_gia_registrata = False
 
-if 'mostra_vai_login' not in st.session_state:
+if 'mostra_vai_login' not in st.session_state: # indirizzamento pagina di login
     st.session_state.mostra_vai_login = False
 
-if 'appena_registrato' not in st.session_state:
+if 'appena_registrato' not in st.session_state: # utente appena registrato
     st.session_state.appena_registrato = False
 
-if 'chat' not in st.session_state:
+if 'chat' not in st.session_state: # chat
     st.session_state.chat = []
 
-if 'chat_input' not in st.session_state:
+if 'chat_input' not in st.session_state: # mostra/nascondi input chat
     st.session_state.chat_input = True
 
-if 'salva_chat' not in st.session_state:
+if 'salva_chat' not in st.session_state: # salva chat
     st.session_state.salva_chat = False
 
-if 'titolo_chat' not in st.session_state:
+if 'titolo_chat' not in st.session_state: # titolo chat
     st.session_state.titolo_chat = ""
-if 'salvataggio' not in st.session_state:
+
+if 'salvataggio' not in st.session_state: # fase di salvataggio
     st.session_state.salvataggio = False
 
 # st.session_state.pop("click_vai_login", None)
 
 
+
+# errore fase login, reset sessioni -> pagina login
 if st.session_state.loggato == False and st.session_state.chi_loggato != 0:
     st.session_state.page = "login"
     st.session_state.loggato = False
@@ -56,6 +59,8 @@ if st.session_state.loggato == False and st.session_state.chi_loggato != 0:
     # st.experimental_rerun()
     st.rerun()
 
+
+# fase di salvataaggio -> conversione chat + salvataggio
 if st.session_state.salvataggio:
     testo = chat_obj_text()
     salva_chat_db(testo)

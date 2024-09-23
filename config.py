@@ -1,7 +1,7 @@
 import sqlite3
 
 
-def connessione():
+def connessione():# connessione db
     try:
         conn = sqlite3.connect("database.db")
         # print("connessione riuscita")

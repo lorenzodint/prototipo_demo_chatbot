@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import streamlit as st
 from config import connessione
 
-def aggiungi_utente(email, password):
+def aggiungi_utente(email, password): # aggiungi utente db
     try:
 
         if connessione()[0]:
@@ -25,7 +25,7 @@ def aggiungi_utente(email, password):
         print("errore query aggiungi utente")
 
 
-def elimina_utente(email):
+def elimina_utente(email): # elimina utente db
     try:
 
         if connessione()[0]:
@@ -41,7 +41,7 @@ def elimina_utente(email):
         print("errore query elimina utente")
 
 
-def elimina_tab(tabella):
+def elimina_tab(tabella): # elimina tabella db
     try:
 
         if connessione()[0]:
@@ -72,7 +72,7 @@ def controllo_email():
         return risultato
 
 
-def controllo_credenziali(email, password):
+def controllo_credenziali(email, password): # controllo credenziali in fase di accesso
     if connessione()[0]:
         conn = connessione()[1]
         cursore = conn.cursor()
@@ -126,7 +126,7 @@ def gpt(input_utente):
     return response.choices[0].message.content
 
 
-def chat_obj_text():
+def chat_obj_text(): # converti oggetto chat in stringa
     testo = ""
     for messaggio in st.session_state.chat:
         testo += "@$?"
@@ -144,7 +144,7 @@ def chat_obj_text():
 
     return testo
 
-def chat_text_obj(testo):
+def chat_text_obj(testo): # converti stringa chat in oggetto
     chat = []
     elem = testo.split("@$?")
     for item in elem:
@@ -172,7 +172,7 @@ def chat_text_obj(testo):
 
 
 
-def select_all(tabella):
+def select_all(tabella): # query select all
     if connessione()[0]:
         conn = connessione()[1]
         cursore = conn.cursor()
@@ -183,7 +183,7 @@ def select_all(tabella):
         return risultato
 
 
-def select_1(tabella, colonna1, parametro1):
+def select_1(tabella, colonna1, parametro1): # query select + 1 parametro
     if connessione()[0]:
         conn = connessione()[1]
         cursore = conn.cursor()
@@ -194,7 +194,7 @@ def select_1(tabella, colonna1, parametro1):
         return risultato
 
 
-def salva_chat_db(testo):
+def salva_chat_db(testo): # salvataggio chat su db
     try:
 
         if select_all("chats") == []:
@@ -233,7 +233,7 @@ def salva_chat_db(testo):
         print(er)
 
 
-def aggiorna_chat_db(testo):
+def aggiorna_chat_db(testo): # aggiorna chat db
     try:
         if connessione()[0]:
             conn = connessione()[1]
@@ -254,7 +254,7 @@ def aggiorna_chat_db(testo):
         print("\n\n")
 
 
-def crea_lista_chat(utente):
+def crea_lista_chat(utente): # lista chat utente salvate
     try:
         if connessione()[0]:
             conn = connessione()[1]

@@ -7,29 +7,28 @@ from openai import OpenAI
 from functions import *
 
 
-def crea_sidebar():
+def crea_sidebar():  # menu laterale
     menuLaterale = st.sidebar
     with menuLaterale:
         if st.session_state.loggato == 0:
             # NAVIGAZIONE DA ESTERNO
             if st.button("Home"):
                 st.session_state.page = 'home'
-                #st.experimental_rerun()
+                # st.experimental_rerun()
                 st.rerun()
 
             if st.button("Accedi"):
                 st.session_state.page = 'login'
-                #st.experimental_rerun()
+                # st.experimental_rerun()
                 st.rerun()
-
 
             if st.button("Registrati"):
                 st.session_state.page = 'register'
-                #st.experimental_rerun()
+                # st.experimental_rerun()
                 st.rerun()
 
         else:
-            # NAVIGAZIONE DA ACCESSO
+            # NAVIGAZIONE DOPO ACCESSO
             if st.button("Nuova Chat"):
                 st.session_state.chat = []
                 st.session_state.titolo_chat = ""
@@ -44,23 +43,21 @@ def crea_sidebar():
 
             st.divider()
 
-
-
             col1, col2 = st.columns([1, 1])
 
             with col1:
                 if st.button("Salva Chat"):
-                    #pass
+                    # pass
                     st.session_state.salva_chat = True
                     st.session_state.chat_input = False
-                    #st.experimental_rerun()
+                    # st.experimental_rerun()
                     st.rerun()
 
             with col2:
                 if st.button("Svuota Chat"):
                     st.session_state.chat = []
                     st.session_state.titolo_chat = ""
-                    #st.experimental_rerun()
+                    # st.experimental_rerun()
                     st.rerun()
 
             col1, col2 = st.columns([1, 1])
@@ -70,12 +67,13 @@ def crea_sidebar():
                     st.session_state.loggato = False
                     st.session_state.chi_loggato = 0
                     st.session_state.chat = []
-                    #st.experimental_rerun()
+                    # st.experimental_rerun()
                     st.rerun()
 
 
 def lista_chat():
     pass
+
 
 def chat_bot():
     timestamp = time.time()
@@ -145,23 +143,8 @@ def salva_chat():
             st.session_state.chat_input = True
             st.session_state.salva_chat = False
             st.session_state.salvataggio = False
-            #st.experimental_rerun()
+            # st.experimental_rerun()
             st.rerun()
-
-
-def test():
-    st.title("consigliere libri")
-    if "conversazione" not in st.session_state:
-        st.session_state.conversazione = "Sei un chatbot consigliere di libri. Parliamo dei tuoi gusti per trovare il libro perfetto per te!\n"
-
-    user_inp = st.text_input("Tu:", "")
-    if user_inp:
-        st.session_state.conversazione += f"Tu: {user_inp}\n"
-        consiglio = "risposta chat gpt"
-        st.session_state.conversazione += f"Consigliere: {consiglio}\n"
-        # st.text_area("Conversazione", st.session_state.conversazione, height=300)
-
-    st.text_area("Conversazione", st.session_state.conversazione, height=300)
 
 
 def gpt_start():
@@ -174,15 +157,18 @@ def gpt_start():
         api_key=chiave_api
     )
 
-
+    # ottieni PROMPT SISTEMA
     prompt_sistema = os.getenv("PROMPT_SISTEMA")
 
-    sistema =prompt_sistema
+    sistema = prompt_sistema
 
+    # crea messaggio di sistema
     messaggio = {"role": "system", "content": sistema}
 
+    #aggiungi messaggio alla chat
     st.session_state.chat.append(messaggio)
 
+    # genera risposta su storico chat
     risposta = client.chat.completions.create(
         messages=st.session_state.chat,
         model="gpt-3.5-turbo",
@@ -204,6 +190,7 @@ def gpt_risposta():
         api_key=chiave_api
     )
 
+    # genera ripsposta su storico chat
     risposta = client.chat.completions.create(
         messages=st.session_state.chat,
         model="gpt-3.5-turbo",
@@ -215,13 +202,7 @@ def gpt_risposta():
     return risposta.choices[0].message.content
 
 
-
-
 def lista():
-
     for ch in crea_lista_chat(st.session_state.chi_loggato):
         if st.button(ch[2]):
             st.session_state.chat = chat_text_obj(ch[3])
-
-
-
